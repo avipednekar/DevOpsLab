@@ -5,13 +5,13 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                echo 'Fetching source code'
+                checkout scm
             }
         }
 
         stage('Build') {
             steps {
-                bat 'echo Building Website'
+                bat 'echo Building website'
             }
         }
 
@@ -23,11 +23,11 @@ pipeline {
                 '''
             }
         }
+    }
 
-        stage('Verify') {
-            steps {
-                bat 'dir C:\\DeployDemo'
-            }
+    post {
+        success {
+            echo 'Deployment Successful'
         }
     }
 }
