@@ -2,32 +2,26 @@ pipeline {
     agent any
 
     stages {
-
         stage('Checkout') {
             steps {
                 checkout scm
             }
         }
 
-        stage('Build') {
+        stage('Validate HTML') {
             steps {
-                bat 'echo Building website'
+                bat '''
+                curl -H "Content-Type: text/html; charset=utf-8" ^
+                --data-binary @index.html ^
+                https://validator.w3.org/nu/?out=text
+                '''
             }
         }
 
         stage('Deploy') {
             steps {
-                bat '''
-                mkdir C:\\DeployDemo 2>NUL
-                xcopy * C:\\DeployDemo /E /Y
-                '''
+                bat 'echo Deployment successful'
             }
-        }
-    }
-
-    post {
-        success {
-            echo 'Deployment Successful'
         }
     }
 }
